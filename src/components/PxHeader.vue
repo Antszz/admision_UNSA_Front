@@ -7,8 +7,8 @@
           <router-link
             :to="{ name: 'home' }"
             class="font-semibold text-4xl tracking-tight ml-10"
-            >Gestion de Procesos de Admisión
-          </router-link>
+            >Gestion de Procesos de Admisión</router-link
+          >
         </div>
       </nav>
     </nav>
