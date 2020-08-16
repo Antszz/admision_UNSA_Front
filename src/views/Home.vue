@@ -6,7 +6,7 @@
         <router-link class="hover:underline text-green-600" :to="{ name: 'roles' }">Roles</router-link>
       </li>
       <li>
-        <router-link class="hover:underline text-green-600" :to="{ name: 'pabellon' }">Pabellon</router-link>
+        <router-link class="hover:underline text-green-600" :to="{ name: 'pabellones' }">Pabellon</router-link>
       </li>
       <li>
         <router-link class="hover:underline text-green-600" :to="{ name: 'aulas' }">Aulas</router-link>
