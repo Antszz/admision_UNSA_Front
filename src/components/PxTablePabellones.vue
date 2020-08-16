@@ -3,13 +3,10 @@
     <thead>
       <tr class="bg-gray-100 border-b-2 border-gray-400">
         <th :class="{ up: this.sortOrder === 1, down: this.sortOrder === -1 }">
-          <span class="underline cursor-pointer" @click="changeSortOrder"
-            >Id</span
-          >
+          <span class="underline cursor-pointer" @click="changeSortOrder">Pabellon</span>
         </th>
-        <th>Tipo de participante</th>
-        <th>Rol</th>
-
+        <th>Guardero</th>
+        <th>Telefono</th>
         <td class="hidden sm:block">
           <input
             class="bg-gray-100 focus:outline-none border-b border-gray-400 py-2 px-4 block w-full appearance-none leading-normal"
@@ -23,24 +20,19 @@
     </thead>
     <tbody>
       <tr
-        v-for="a in filteredRoles"
+        v-for="a in filteredPabellones"
         :key="a.id"
         class="border-b border-gray-200 hover:bg-gray-100 hover:bg-orange-100"
       >
-        <td>
-          <b>#{{ a.id }}</b>
-        </td>
-        <td>{{ a.Tipo_Participante }}</td>
-        <td>{{ a.Rol }}</td>
-
+        <td>{{ a.Pabellon }}</td>
+        <td>{{ a.Guardero }}</td>
+        <td>{{ a.Telefono }}</td>
         <td class="hidden sm:block">
           <button
             class="bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-4 rounded"
             type="button"
-            @click="deleteRol(a.id)"
-          >
-            Eliminar
-          </button>
+            @click="deletePabellon(a.id)"
+          >Eliminar</button>
         </td>
       </tr>
     </tbody>
@@ -49,7 +41,7 @@
 
 <script>
 export default {
-  name: "PxTableRoles",
+  name: "PxTablePabellones",
 
   data() {
     return {
@@ -59,18 +51,17 @@ export default {
   },
 
   computed: {
-    filteredRoles() {
+    filteredPabellones() {
       const altOrder = this.sortOrder === 1 ? -1 : 1;
 
-      return this.roles
+      return this.pabellones
         .filter(
           a =>
-            a.Tipo_Participante.toLowerCase().includes(
-              this.filter.toLowerCase()
-            ) || a.Rol.toLowerCase().includes(this.filter.toLowerCase())
+            a.Pabellon.toLowerCase().includes(this.filter.toLowerCase()) ||
+            a.Guardero.toLowerCase().includes(this.filter.toLowerCase())
         )
         .sort((a, b) => {
-          if (parseInt(a.id) > parseInt(b.id)) {
+          if (a.Pabellon.toLowerCase() > b.Pabellon.toLowerCase()) {
             return this.sortOrder;
           }
 
@@ -80,7 +71,7 @@ export default {
   },
 
   props: {
-    roles: {
+    pabellones: {
       type: Array,
       default: () => []
     }
@@ -89,7 +80,7 @@ export default {
     changeSortOrder() {
       this.sortOrder = this.sortOrder === 1 ? -1 : 1;
     },
-    deleteRol(id) {
+    deletePabellon(id) {
       this.$emit("delete-from-lista", id);
     }
   }

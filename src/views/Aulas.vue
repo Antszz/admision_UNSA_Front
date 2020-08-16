@@ -124,7 +124,7 @@ import api from "@/api";
 import PxTableRoles from "@/components/PxTableRoles";
 
 export default {
-  name: "roles",
+  name: "aulas",
 
   components: {
     PxTableRoles
@@ -133,10 +133,18 @@ export default {
   data() {
     return {
       busqueda: "",
-      tipoParticipante: "",
       roles: [],
-      rol: "",
-      indexB: -1
+      aulas: [],
+      indexB: -1,
+
+      pabellon: "",
+      n_aula: "",
+      codigo: "",
+      piso: 0,
+      aforo: 0,
+      filas: 0,
+      columnas: 0,
+      situacion: ""
     };
   },
 
@@ -147,7 +155,8 @@ export default {
     guardarRol() {
       let rol = {
         Tipo_Participante: this.tipoParticipante,
-        Rol: this.rol
+        Rol: this.rol,
+        Pabellon_id: this.pabellon
       };
       api.postRol(rol).then(result => {
         this.roles.push(result.data);
