@@ -14,9 +14,9 @@
               class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="busqueda"
             >
-              <option>Seleccione un pabellón ...</option>
-              <option v-for="r in pabellones" :key="r.id">
-                {{ r.Pabellon }}
+              <option>Seleccione un proceso ...</option>
+              <option v-for="r in procesos" :key="r.id">
+                {{ r.Proceso }}
               </option>
             </select>
             <div
@@ -39,49 +39,67 @@
         <div class="w-full md:w-2/2 px-3 mb-6 md:mb-0">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            for="pabellon"
-            >Nombre de Pabellón</label
+            for="nombre"
+            >Nombre de Proceso</label
           >
           <input
-            v-model="pabellon"
+            v-model="nombre"
             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            id="pabellon"
+            id="nombre"
             type="text"
-            placeholder="Definir un pabellon"
+            placeholder="Definir un proceso"
           />
         </div>
         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            for="guardero"
-            >Guardero</label
+            for="fecha"
+            >Fecha</label
           >
           <input
-            v-model="guardero"
+            v-model="fecha"
             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            id="guardero"
-            type="text"
-            placeholder="Nombre del Guardero"
+            id="fecha"
+            type="date"
+            placeholder="Fecha del proceso"
           />
         </div>
-        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+      </div>
+      <div class="flex flex-wrap -mx-3 mb-2">
+        <div class="w-full px-3 mb-6 md:mb-0">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            for="telefono"
-            >Teléfono</label
+            for="situacion"
+            >Situacion</label
           >
-          <input
-            v-model="telefono"
-            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            id="telefono"
-            type="text"
-            placeholder="Telefono del guardero"
-          />
+          <div class="relative">
+            <select
+              v-model="situacion"
+              class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              id="situacion"
+            >
+              <option>Ejecucion</option>
+              <option>Finalizado</option>
+            </select>
+            <div
+              class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+            >
+              <svg
+                class="fill-current h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                />
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
       <div class="flex justify-between content-center">
         <button
-          @click="guardarPabellon"
+          @click="guardarProceso"
           class="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded"
           type="button"
         >
@@ -95,14 +113,14 @@
           Modificar
         </button>
         <button
-          @click="modificarPabellon"
+          @click="modificarProceso"
           class="bg-gray-800 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
           type="button"
         >
           Guardar
         </button>
         <button
-          @click="borrarPabellon"
+          @click="borrarProceso"
           class="bg-gray-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
           type="button"
         >
@@ -110,33 +128,33 @@
         </button>
       </div>
     </form>
-    <px-table-pabellones
+    <px-table-procesos
       @delete-from-lista="borrarPorLista($event)"
-      :pabellones="pabellones"
+      :procesos="procesos"
     />
   </div>
 </template>
 
 <script>
 import api from "@/api";
-import PxTablePabellones from "@/components/PxTablePabellones";
+import PxTableProcesos from "@/components/PxTableProcesos";
 
 export default {
-  name: "pabellones",
+  name: "procesos",
 
   components: {
-    PxTablePabellones
+    PxTableProcesos
   },
 
   data() {
     return {
       busqueda: "",
-      pabellones: [],
+      procesos: [],
       indexB: -1,
 
-      pabellon: "",
-      guardero: "",
-      telefono: 0
+      nombre: "",
+      fecha: "",
+      situacion: 0
     };
   },
 
@@ -154,50 +172,48 @@ export default {
       }
       alert(msjAlert);
     },
-    guardarPabellon() {
-      let pabellon = {
-        Pabellon: this.pabellon,
-        Guardero: this.guardero,
-        Teléfono: this.telefono
+    guardarProceso() {
+      let proceso = {
+        Proceso: this.nombre,
+        Fecha: this.fecha,
+        Situacion: this.situacion
       };
       api
-        .postPabellon(pabellon)
+        .postProceso(proceso)
         .then(result => {
-          this.pabellones.push(result.data);
-          console.log(this.pabellones);
+          this.procesos.push(result.data);
+          console.log(this.procesos);
         })
         .catch(error => {
           this.alertErrores(error.response.data.error);
         });
     },
     cargarBusqueda() {
-      this.indexB = this.pabellones.findIndex(
-        r => r.Pabellon === this.busqueda
-      );
-      this.pabellon = this.pabellones[this.indexB].Pabellon;
-      this.guardero = this.pabellones[this.indexB].Guardero;
-      this.telefono = this.pabellones[this.indexB].Teléfono;
-      console.log(this.pabellones[this.indexB]);
+      this.indexB = this.procesos.findIndex(r => r.Proceso === this.busqueda);
+      this.nombre = this.procesos[this.indexB].Proceso;
+      this.fecha = this.procesos[this.indexB].Fecha;
+      this.situacion = this.procesos[this.indexB].Situacion;
+      console.log(this.procesos[this.indexB]);
     },
-    modificarPabellon() {
+    modificarProceso() {
       var mensaje = confirm(
-        `Esta seguro que quiere modificar el pabellón con ID: ${
-          this.pabellones[this.indexB].id
+        `Esta seguro que quiere modificar el proceso con ID: ${
+          this.procesos[this.indexB].id
         }?`
       );
       if (mensaje) {
-        let pabellon = {
-          Pabellon: this.pabellon,
-          Guardero: this.guardero,
-          Teléfono: this.telefono
+        let proceso = {
+          Proceso: this.nombre,
+          Fecha: this.fecha,
+          Situacion: this.situacion
         };
         api
-          .putPabellon(pabellon, this.pabellones[this.indexB].id)
+          .putProceso(proceso, this.procesos[this.indexB].id)
           .then(result => {
-            this.pabellones[this.indexB].Pabellon = result.data.Pabellon;
-            this.pabellones[this.indexB].Guardero = result.data.Guardero;
-            this.pabellones[this.indexB].Teléfono = result.data.Teléfono;
-            console.log(this.pabellones[this.indexB]);
+            this.procesos[this.indexB].Proceso = result.data.Proceso;
+            this.procesos[this.indexB].Fecha = result.data.Fecha;
+            this.procesos[this.indexB].Situacion = result.data.Situacion;
+            console.log(this.procesos[this.indexB]);
             this.indexB = -1;
             this.busqueda = "";
           })
@@ -207,18 +223,18 @@ export default {
       }
       //this.indexB = -1;
     },
-    borrarPabellon() {
+    borrarProceso() {
       var mensaje = confirm(
-        `Esta seguro que quiere BORRAR el pabellón con ID: ${
-          this.pabellones[this.indexB].id
+        `Esta seguro que quiere BORRAR el proceso con ID: ${
+          this.procesos[this.indexB].id
         }?`
       );
       if (mensaje) {
         api
-          .deletePabellon(this.pabellones[this.indexB].id)
+          .deleteProceso(this.procesos[this.indexB].id)
           .then(result => {
             if (result.status === 200) {
-              this.pabellones.splice([this.indexB], 1);
+              this.procesos.splice([this.indexB], 1);
               this.indexB = -1;
               this.busqueda = "";
             }
@@ -231,15 +247,15 @@ export default {
     },
     borrarPorLista(id) {
       var mensaje = confirm(
-        `Esta seguro que quiere BORRAR el pabellón con ID: ${id}?`
+        `Esta seguro que quiere BORRAR el proceso con ID: ${id}?`
       );
       if (mensaje) {
-        let indexL = this.pabellones.findIndex(r => r.id === id);
+        let indexL = this.procesos.findIndex(r => r.id === id);
         api
-          .deletePabellon(id)
+          .deleteProceso(id)
           .then(result => {
             if (result.status === 200) {
-              this.pabellones.splice([indexL], 1);
+              this.procesos.splice([indexL], 1);
             }
           })
           .catch(error => {
@@ -250,9 +266,9 @@ export default {
   },
 
   created() {
-    api.getPabellones().then(result => {
-      this.pabellones = result.data;
-      console.log(this.pabellones);
+    api.getProcesos().then(result => {
+      this.procesos = result.data;
+      console.log(this.procesos);
     });
   }
 };

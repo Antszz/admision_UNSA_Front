@@ -7,8 +7,13 @@
             >Pabellon</span
           >
         </th>
-        <th>Guardero</th>
-        <th>Telefono</th>
+        <th>Aula N°</th>
+        <th>Codigo</th>
+        <th>Piso</th>
+        <th>Aforo</th>
+        <th>Filas</th>
+        <th>Columnas</th>
+        <th>Situación</th>
         <td class="hidden sm:block">
           <input
             class="bg-gray-100 focus:outline-none border-b border-gray-400 py-2 px-4 block w-full appearance-none leading-normal"
@@ -22,18 +27,23 @@
     </thead>
     <tbody>
       <tr
-        v-for="a in filteredPabellones"
+        v-for="a in filteredAulas"
         :key="a.id"
         class="border-b border-gray-200 hover:bg-gray-100 hover:bg-orange-100"
       >
-        <td>{{ a.Pabellon }}</td>
-        <td>{{ a.Guardero }}</td>
-        <td>{{ a.Teléfono }}</td>
+        <td>{{ a.Pabellon_id }}</td>
+        <td>{{ a.Aula_Nro }}</td>
+        <td>{{ a.Código }}</td>
+        <td>{{ a.Piso }}</td>
+        <td>{{ a.Aforo }}</td>
+        <td>{{ a.Filas }}</td>
+        <td>{{ a.Columnas }}</td>
+        <td>{{ a.Situación }}</td>
         <td class="hidden sm:block">
           <button
             class="bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-4 rounded"
             type="button"
-            @click="deletePabellon(a.id)"
+            @click="deleteAula(a.id)"
           >
             Eliminar
           </button>
@@ -45,7 +55,7 @@
 
 <script>
 export default {
-  name: "PxTablePabellones",
+  name: "PxTableAulas",
 
   data() {
     return {
@@ -55,17 +65,18 @@ export default {
   },
 
   computed: {
-    filteredPabellones() {
+    filteredAulas() {
       const altOrder = this.sortOrder === 1 ? -1 : 1;
 
-      return this.pabellones
+      return this.aulas
         .filter(
           a =>
-            a.Pabellon.toLowerCase().includes(this.filter.toLowerCase()) ||
-            a.Guardero.toLowerCase().includes(this.filter.toLowerCase())
+            a.Aula_Nro.toString().includes(this.filter.toLowerCase()) ||
+            a.Situación.includes(this.filter) ||
+            a.Código.toString().includes(this.filter.toLowerCase())
         )
         .sort((a, b) => {
-          if (a.Pabellon.toLowerCase() > b.Pabellon.toLowerCase()) {
+          if (a.Pabellon_id > b.Pabellon_id) {
             return this.sortOrder;
           }
 
@@ -75,7 +86,7 @@ export default {
   },
 
   props: {
-    pabellones: {
+    aulas: {
       type: Array,
       default: () => []
     }
@@ -84,7 +95,7 @@ export default {
     changeSortOrder() {
       this.sortOrder = this.sortOrder === 1 ? -1 : 1;
     },
-    deletePabellon(id) {
+    deleteAula(id) {
       this.$emit("delete-from-lista", id);
     }
   }

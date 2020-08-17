@@ -8,11 +8,26 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "adler-32": "^1.2.0",
     "axios": "^0.19.2",
+    "cfb": "^1.2.0",
+    "codepage": "^1.14.0",
+    "commander": "^6.0.0",
     "core-js": "^3.6.5",
+    "crc-32": "^1.2.0",
+    "dompurify": "^2.0.12",
+    "exit-on-epipe": "^1.0.1",
+    "html2canvas": "^1.0.0-rc.7",
+    "jquery": "^3.5.1",
+    "json2csv": "^5.0.1",
+    "jspdf": "^2.0.0",
+    "ssf": "^0.11.2",
     "tailwindcss": "^1.1.2",
     "vue": "^2.6.11",
-    "vue-router": "^3.4.3"
+    "vue-router": "^3.4.3",
+    "wmf": "^1.0.2",
+    "word": "^0.4.0",
+    "xlsx": "^0.16.6"
   },
   "devDependencies": {
     "@ianaya89/vue-cli-plugin-tailwind": "~1.1.0",

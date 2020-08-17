@@ -4,11 +4,13 @@
       <tr class="bg-gray-100 border-b-2 border-gray-400">
         <th :class="{ up: this.sortOrder === 1, down: this.sortOrder === -1 }">
           <span class="underline cursor-pointer" @click="changeSortOrder"
-            >Pabellon</span
+            >Id</span
           >
         </th>
-        <th>Guardero</th>
-        <th>Telefono</th>
+        <th>Participante</th>
+        <th>Proceso</th>
+        <th>Asistio</th>
+        <th>Aula</th>
         <td class="hidden sm:block">
           <input
             class="bg-gray-100 focus:outline-none border-b border-gray-400 py-2 px-4 block w-full appearance-none leading-normal"
@@ -22,18 +24,20 @@
     </thead>
     <tbody>
       <tr
-        v-for="a in filteredPabellones"
+        v-for="a in filteredPProceso"
         :key="a.id"
         class="border-b border-gray-200 hover:bg-gray-100 hover:bg-orange-100"
       >
-        <td>{{ a.Pabellon }}</td>
-        <td>{{ a.Guardero }}</td>
-        <td>{{ a.Teléfono }}</td>
+        <td>{{ a.id }}</td>
+        <td>{{ a.Participante_id }}</td>
+        <td>{{ a.Proceso_id }}</td>
+        <td>{{ a.Asistencia }}</td>
+        <td>{{ a.Aula_id }}</td>
         <td class="hidden sm:block">
           <button
             class="bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-4 rounded"
             type="button"
-            @click="deletePabellon(a.id)"
+            @click="deletePProceso(a.id)"
           >
             Eliminar
           </button>
@@ -50,44 +54,46 @@ export default {
   data() {
     return {
       filter: "",
-      sortOrder: 1
+      sortOrder: 1,
     };
   },
 
   computed: {
-    filteredPabellones() {
+    filteredPProceso() {
       const altOrder = this.sortOrder === 1 ? -1 : 1;
 
-      return this.pabellones
+      return this.pParticipantes
         .filter(
-          a =>
-            a.Pabellon.toLowerCase().includes(this.filter.toLowerCase()) ||
-            a.Guardero.toLowerCase().includes(this.filter.toLowerCase())
+          (a) =>
+            a.Asistencia.toLowerCase().includes(this.filter.toLowerCase()) ||
+            a.Aula_id.toString()
+              .toLowerCase()
+              .includes(this.filter.toLowerCase())
         )
         .sort((a, b) => {
-          if (a.Pabellon.toLowerCase() > b.Pabellon.toLowerCase()) {
+          if (a.id > b.id) {
             return this.sortOrder;
           }
 
           return altOrder;
         });
-    }
+    },
   },
 
   props: {
-    pabellones: {
+    pParticipantes: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   methods: {
     changeSortOrder() {
       this.sortOrder = this.sortOrder === 1 ? -1 : 1;
     },
-    deletePabellon(id) {
+    deletePProceso(id) {
       this.$emit("delete-from-lista", id);
-    }
-  }
+    },
+  },
 };
 </script>
 
